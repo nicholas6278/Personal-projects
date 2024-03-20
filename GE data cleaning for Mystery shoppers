@@ -1,0 +1,74 @@
+Sub CopyRanges ()
+  Dim ws As Worksheet
+  Dim news As Worksheet
+  Dim lastRow As Long
+  Dim pasteRange As Range
+  Dim pasteCell As Range
+  Dim colIndex As Integer
+  Dim i As Integer
+
+  ' creates a new worksheet at the end of the workbook
+  Set news - Thisworkbook. Sheets. Add(After: -ThisWorkbook.Sheets (Thisworkbook.Sheets Count)) newWs. Name = "Merged Data"
+  
+  ' finds the first worksheet
+  Set ws - ThisWorkbook. Sheets (1)
+
+  ' sets the range to be copied
+  Set DataRange - ws. Range ("A12: A162**)
+
+  ' sets the paste cell to A3 of the new worksheet
+  Set pasteCell - newWs. Range ("A3")
+
+  ' copies values from the data range to the paste cell
+  pasteCell. Resize (DataRange. Rows. Count, DataRange. Columns .Count). Value DataRange. Value
+
+  ' copies values from the data range to the paste cell
+  pasteCell. Resize (DataRange. Rows. Count, DataRange. Columns .Count) . Value = DataRange.Value
+
+  ' sets the height and width of pasteCell
+  pasteCell. Roweight = 75
+
+  ' starts pasting sheet names from column B (column index 2)
+  colindex = 2
+
+  ' sets the paste cell to B3 of the new worksheet
+  Set pasteCell = newWs. Range ("B3")
+
+
+
+  For Each ws In ThisWorkbook. Sheets 
+    If ws.Name <> newWs. Name Then 
+      ws.AutoFilterMode = False
+
+    ' pastes sheet name into corresponding 
+    column news.Cells (2, colIndex). Value - ws. Name
+
+    Set DataRange = Ws. Range("B12:B162")
+
+    ' sets pasteRange to cover both values and formats
+    Set pasteRange - pasteCell.Offset (1, 0). Resize(DataRange. Rows. Count, DataRange. Columns. Count)
+
+    ' paste data from each sheet
+    pasteCell. Resize(DataRange. Rows.Count, DataRange.Columns. Count). Value - DataRange. Value
+
+    ' apply formatting
+    With pasteCell
+      Resize (DataRange. Rows. Count, DataRange. Columns. Count). WrapText = True 
+    End With
+
+    ' sets the height of pasteRange
+    pasteRange.Roweight = 75
+
+    ' sets the width of each column in pasteRange
+    For i - 1 To pasteRange.Columns.Count 
+      pasteRange.Columns (i).ColumnWidth 8.43
+    Next i
+
+    ' move pasteCell to the next column
+    Set pasteCell = pasteCell.Offset(, DataRange. Columns. Count)
+
+    ' move to the next column index for the next sheet name
+    colIndex = colIndex + 1
+End If  
+Next ws
+End Sub
